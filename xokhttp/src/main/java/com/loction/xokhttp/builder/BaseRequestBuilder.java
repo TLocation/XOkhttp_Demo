@@ -1,6 +1,7 @@
 package com.loction.xokhttp.builder;
 
 import com.loction.xokhttp.XOkhttpClient;
+import com.loction.xokhttp.response.IResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -136,5 +137,7 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
             requestBuilder.addHeader(key, headers.get(key));
         }
     }
+
+    public abstract  void enqueue(IResponse iResponse);
 
 }
