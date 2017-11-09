@@ -1,9 +1,12 @@
 package com.loction.xokhttp;
 
+import android.content.Context;
+import android.icu.util.ChineseCalendar;
 import android.os.Build;
 
 import com.loction.xokhttp.utils.HttpsUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -14,6 +17,7 @@ import java.util.StringTokenizer;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -29,8 +33,38 @@ import okhttp3.logging.HttpLoggingInterceptor;
  */
 
 public class XOkhttpClient {
+    private OkHttpClient mOkHttpClient;
+
+    private XOkhttpClient(OkHttpClient okHttpClient) {
+        if (okHttpClient == null) {
+            mOkHttpClient = new OkHttpClient();
+        } else {
+            mOkHttpClient = okHttpClient;
+        }
+
+    }
+
+    private static XOkhttpClient xOkhttpClient;
+
+    public static XOkhttpClient getXOkHttp(OkHttpClient okHttpClient) {
+        if (xOkhttpClient == null) {
+            synchronized (XOkhttpClient.class) {
+                if (xOkhttpClient == null) {
+                    xOkhttpClient = new XOkhttpClient(okHttpClient);
+                }
+            }
+        }
+        return xOkhttpClient;
+    }
+
+    public static XOkhttpClient getXOkhttp() {
+        return getXOkHttp(null);
+    }
 
 
+    /**
+     * 构建者类
+     */
     public static class Builder {
         private final String METHOD_GET = "GET";
         private final String METHOD_POST = "POST";
@@ -205,6 +239,47 @@ public class XOkhttpClient {
             return this;
         }
 
+
+        private Builder setCookie() {
+            return this;
+        }
+
+        /**
+         * 连接失败后是否重新连接
+         *
+         * @param isConnect true 重新连接 false或者不调用不重新连接
+         * @return
+         */
+        public Builder setConnectionFail(boolean isConnect) {
+            okhttpBuilder.retryOnConnectionFailure(isConnect);
+            return this;
+        }
+
+
+        public Builder setCache(Context context, int cacheSize, int timeSize) {
+            /**
+             * 创建缓存文件夹
+             */
+            File cacheFile = new File(context.getExternalCacheDir().toString(), "cache");
+            /**
+             * 设置缓存大小
+             */
+            Cache cache = new Cache(cacheFile, cacheSize);
+            final String maxAge = "max-age=" + timeSize;
+            Interceptor interceptor = new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    final Response proceed = chain.proceed(chain.request());
+                    return proceed.newBuilder().removeHeader("pragma")
+                            .header("Cache-Control", maxAge).build();
+                }
+            };
+            okhttpBuilder.cache(cache)
+                    .addInterceptor(interceptor);
+            return this;
+        }
+
+
         /**
          * 添加参数内部调用方法
          *
@@ -269,6 +344,20 @@ public class XOkhttpClient {
                     break;
                 default:
             }
+        }
+
+        Interceptor interceptor = new Interceptor() {
+
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                final Request request = chain.request();
+
+                return null;
+            }
+        };
+
+        public XOkhttpClient builder() {
+            return XOkhttpClient.getXOkHttp(okhttpBuilder.build());
         }
     }
 }
