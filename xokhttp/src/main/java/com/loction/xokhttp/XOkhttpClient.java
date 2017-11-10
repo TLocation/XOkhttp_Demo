@@ -3,6 +3,8 @@ package com.loction.xokhttp;
 import android.content.Context;
 import android.icu.util.ChineseCalendar;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.loction.xokhttp.utils.HttpsUtils;
 
@@ -34,6 +36,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 public class XOkhttpClient {
     private OkHttpClient mOkHttpClient;
+    public static Handler handler;
+
 
     private XOkhttpClient(OkHttpClient okHttpClient) {
         if (okHttpClient == null) {
@@ -41,7 +45,7 @@ public class XOkhttpClient {
         } else {
             mOkHttpClient = okHttpClient;
         }
-
+        handler = new Handler(Looper.getMainLooper());
     }
 
     private static XOkhttpClient xOkhttpClient;

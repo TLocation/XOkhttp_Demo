@@ -1,5 +1,7 @@
 package com.loction.xokhttp.builder;
 
+import android.os.Handler;
+
 import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.response.IResponse;
 
@@ -9,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.CacheControl;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 /**
@@ -31,13 +34,14 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
     /**
      * XOkHttpClient对象
      */
-    protected XOkhttpClient xOkhttpClient;
+    protected OkHttpClient xOkhttpClient;
+
     /**
      * 单个请求缓存模式
      */
     protected CacheControl cacheControl;
 
-    public BaseRequestBuilder(XOkhttpClient xOkhttpClient) {
+    public BaseRequestBuilder(OkHttpClient xOkhttpClient) {
         this.xOkhttpClient = xOkhttpClient;
     }
 
@@ -132,12 +136,15 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
      * @param headers
      */
     protected void appendHeaders(Request.Builder requestBuilder, Map<String, String> headers) {
+        if(headers==null||headers.isEmpty()){
+            return;
+        }
         final Set<String> keys = headers.keySet();
         for (String key : keys) {
             requestBuilder.addHeader(key, headers.get(key));
         }
     }
 
-    public abstract  void enqueue(IResponse iResponse);
+    public abstract void enqueue(IResponse iResponse);
 
 }
