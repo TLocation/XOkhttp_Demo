@@ -1,5 +1,6 @@
 package com.loction.xokhttp.callback;
 
+import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.response.IResponse;
 
 import java.io.IOException;
@@ -20,12 +21,31 @@ public class XCallBack implements Callback {
     }
 
     @Override
-    public void onFailure(Call call, IOException e) {
-
+    public void onFailure(Call call, final IOException e) {
+        XOkhttpClient.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                iResponse.onFail(0, e.getMessage());
+            }
+        });
     }
 
     @Override
-    public void onResponse(Call call, Response response) throws IOException {
+    public void onResponse(final Call call, final Response response) throws IOException {
+        if (response.isSuccessful()) {
+
+            iResponse.onSuccful(response);
+        } else {
+            XOkhttpClient.handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    iResponse.onFail(response.code(), response.message());
+
+                }
+            });
+        }
+
 
     }
 }
