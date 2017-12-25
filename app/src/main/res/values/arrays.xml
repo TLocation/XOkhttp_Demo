@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="xokhttp_arrays">
+        <item>GET</item>
+        <item>POST</item>
+        <item>UPLOAD</item>
+        <item>DOWNLoad</item>
+    </string-array>
+
+</resources>
