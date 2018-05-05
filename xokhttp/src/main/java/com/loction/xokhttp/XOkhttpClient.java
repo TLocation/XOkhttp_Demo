@@ -1,11 +1,10 @@
 package com.loction.xokhttp;
 
 import android.content.Context;
-import android.icu.util.ChineseCalendar;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.loction.xokhttp.cookie.CookiesManager;
 import com.loction.xokhttp.utils.HttpsUtils;
 
 import java.io.File;
@@ -15,8 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.concurrent.CompletionService;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -37,6 +34,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class XOkhttpClient {
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
+
+    public static Context mContext;
 
 
     private XOkhttpClient(OkHttpClient okHttpClient) {
@@ -159,7 +158,6 @@ public class XOkhttpClient {
                         final Set<String> headkeys = heards.keySet();
                         for (String headkey : headkeys) {
                             requestBuilder.addHeader(headkey, heards.get(headkey));
-
                         }
                     }
 
@@ -224,7 +222,6 @@ public class XOkhttpClient {
                     return chain.proceed(requestBuilder.build());
                 }
             };
-
             okhttpBuilder.addInterceptor(interceptor);
             return this;
         }
@@ -244,7 +241,15 @@ public class XOkhttpClient {
         }
 
 
-        private Builder setCookie() {
+        /**
+         * 持久化cookie
+         *
+         * @param cookiesManager Xokhttp内部的Cookie管理者  调用此方法需要指定XokkHttp、
+         *                       的Coontext对象
+         * @return
+         */
+        private Builder setCookie(CookiesManager cookiesManager) {
+            okhttpBuilder.cookieJar(cookiesManager);
             return this;
         }
 

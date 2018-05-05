@@ -2,7 +2,6 @@ package com.loction.xokhttp.builder;
 
 import android.text.TextUtils;
 
-import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.callback.XCallBack;
 import com.loction.xokhttp.response.IResponse;
 
@@ -47,7 +46,6 @@ public class GetRequestBuilder extends BaseRequestParamsBuilder<GetRequestBuilde
     }
 
     private String appendParams(String url, Map<String, String> params) {
-
         StringBuilder sb = new StringBuilder();
         sb.append(url + "?");
         if (params != null && !params.isEmpty()) {
@@ -55,7 +53,6 @@ public class GetRequestBuilder extends BaseRequestParamsBuilder<GetRequestBuilde
                 sb.append(key).append("=").append(params.get(key)).append("&");
             }
         }
-
         sb = sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
 

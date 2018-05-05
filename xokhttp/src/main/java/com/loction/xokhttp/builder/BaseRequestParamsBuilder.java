@@ -1,7 +1,5 @@
 package com.loction.xokhttp.builder;
 
-import com.loction.xokhttp.XOkhttpClient;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +17,12 @@ public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilde
     }
 
 
+    /***
+     * 添加参数
+     * @param key
+     * @param value
+     * @return
+     */
     public T addParam(String key, String value) {
         if (params == null) {
             params = new HashMap<>();
