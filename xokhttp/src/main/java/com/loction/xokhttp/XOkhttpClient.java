@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.loction.xokhttp.builder.GetRequestBuilder;
 import com.loction.xokhttp.cookie.CookiesManager;
 import com.loction.xokhttp.utils.HttpsUtils;
 
@@ -32,6 +33,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
  */
 
 public class XOkhttpClient {
+    private static XOkhttpClient xOkhttpClient;
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
 
@@ -47,7 +49,6 @@ public class XOkhttpClient {
         handler = new Handler(Looper.getMainLooper());
     }
 
-    private static XOkhttpClient xOkhttpClient;
 
     public static XOkhttpClient getXOkHttp(OkHttpClient okHttpClient) {
         if (xOkhttpClient == null) {
@@ -64,6 +65,10 @@ public class XOkhttpClient {
         return getXOkHttp(null);
     }
 
+
+    public GetRequestBuilder get() {
+        return new GetRequestBuilder(mOkHttpClient);
+    }
 
     /**
      * 构建者类

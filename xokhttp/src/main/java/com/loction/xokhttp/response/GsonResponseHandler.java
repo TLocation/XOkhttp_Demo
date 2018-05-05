@@ -3,6 +3,7 @@ package com.loction.xokhttp.response;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.loction.xokhttp.XOkhttpClient;
+import com.loction.xokhttp.utils.Responseer;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -29,7 +30,7 @@ public abstract class GsonResponseHandler<T> implements IResponse {
         mType = $Gson$Types.canonicalize(parameter.getActualTypeArguments()[0]);  //将泛型转为type
     }
 
-    public abstract void onSuccful(int code, T response);
+    public abstract void onSuccful(Responseer<T> responseer);
 
     @Override
     public void onSuccful(final Response response) {
@@ -54,12 +55,16 @@ public abstract class GsonResponseHandler<T> implements IResponse {
             @Override
             public void run() {
                 Gson gson = new Gson();
-                onSuccful(response.code(), (T) gson.fromJson(bodyStr, mType));
+                /**
+                 * 优化回调
+                 */
+                onSuccful(new Responseer<T>((T) gson.fromJson(bodyStr, mType), response));
             }
         });
-
-
     }
 
+    @Override
+    public void onFail(int errorCode, String errorMessage) {
 
+    }
 }
