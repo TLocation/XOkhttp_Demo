@@ -108,6 +108,7 @@ public class LinchatActivity extends AppCompatActivity {
             String label = "" + i;
             value.setLabel(label);
             values.add(value);
+            //dsa
         }
 //        axisY.setValues(values);
         data.setAxisYLeft(axisY);  //Y轴设置在左边
