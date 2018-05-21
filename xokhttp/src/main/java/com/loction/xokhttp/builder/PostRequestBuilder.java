@@ -1,10 +1,13 @@
 package com.loction.xokhttp.builder;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.loction.xokhttp.callback.XCallBack;
 import com.loction.xokhttp.response.IResponse;
+import com.loction.xokhttp.utils.MD5Encrypt;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,11 +34,16 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
     }
 
 
-
     @Override
     public void enqueue(IResponse iResponse) {
         Request.Builder builder = new Request.Builder();
-
+        String wangshangyuanyang = MD5Encrypt.encopt(bodyJson.toString(), "wangshangyuanyang");
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        params.put("wangshangyuanyang", wangshangyuanyang);
+        Log.e("TAG", "json===>" + bodyJson.toString());
+        Log.e("TAG", "params===>" + params.toString());
         if (TextUtils.isEmpty(url)) {
             new RuntimeException("url == null");
         }

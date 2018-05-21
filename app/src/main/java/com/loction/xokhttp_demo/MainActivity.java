@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.loction.xokhttp.XOkhttpClient;
+import com.loction.xokhttp.response.IResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,13 +21,33 @@ public class MainActivity extends AppCompatActivity {
                 .builder();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("12", "1");
-            jsonObject.put("12", "1");
-            jsonObject.put("12", "1");
+            jsonObject.put("name", "txl");
+            jsonObject.put("age", "12");
         } catch (JSONException e) {
-            e.printStackTrace();
+            return;
         }
-//        xOkhttpClient.
+        /**
+         * userinfo
+         * suername:xxx
+         * pwd :sxx
+         */
+        xOkhttpClient
+                .post()
+                .url("http://www.baidu.com")
+                .putBodyJson(jsonObject)
+                .putHeaderJson("user","123")
+                .putHeaderJson("ll","Nihap")
+                .enqueue(new IResponse() {
+                    @Override
+                    public void onSuccful(Response response) {
+
+                    }
+
+                    @Override
+                    public void onFail(int errorCode, String errorMessage) {
+
+                    }
+                });
 
 
 
