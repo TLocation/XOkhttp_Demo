@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.loction.xokhttp.builder.GetRequestBuilder;
+import com.loction.xokhttp.builder.PostRequestBuilder;
 import com.loction.xokhttp.cookie.CookiesManager;
 import com.loction.xokhttp.utils.HttpsUtils;
 
@@ -68,6 +69,8 @@ public class XOkhttpClient {
 
     public GetRequestBuilder get() {
         return new GetRequestBuilder(mOkHttpClient);
+    }public PostRequestBuilder post() {
+        return new PostRequestBuilder(mOkHttpClient);
     }
 
     /**

@@ -24,13 +24,13 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
         super(xOkhttpClient);
     }
 
-    private String jsonParams = "";
+    public PostRequestBuilder putJson(String json) {
+        this.json = json;
 
-
-    private PostRequestBuilder addJson(String jsonParams) {
-        this.jsonParams = jsonParams;
         return this;
     }
+
+
 
     @Override
     public void enqueue(IResponse iResponse) {
@@ -51,9 +51,9 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
         }
 
 
-        if (!TextUtils.isEmpty(jsonParams)) {
+        if (!TextUtils.isEmpty(json)) {
             RequestBody body = RequestBody.create(MediaType.parse("application/json; " +
-                    "charset=utf-8"), jsonParams);
+                    "charset=utf-8"), json);
             builder.post(body);
         } else {
             FormBody.Builder fromBuilder = new FormBody.Builder();
@@ -74,6 +74,7 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
                 builder.add(key, params.get(key));
             }
         }
+
 
     }
 

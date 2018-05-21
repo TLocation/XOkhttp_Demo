@@ -9,8 +9,15 @@ import okhttp3.OkHttpClient;
  * Created by localadmin on 2017/11/9.
  */
 
-public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilder> extends BaseRequestBuilder<BaseRequestParamsBuilder> {
+public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilder> extends
+        BaseRequestBuilder<BaseRequestParamsBuilder> {
     protected Map<String, String> params;
+    protected String json;
+
+    public T putJson(String json) {
+        this.json = json;
+        return (T) this;
+    }
 
     public BaseRequestParamsBuilder(OkHttpClient xOkhttpClient) {
         super(xOkhttpClient);
@@ -30,9 +37,10 @@ public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilde
         params.put(key, value);
         return (T) this;
     }
-   public T params(Map<String,String> params){
 
-       this.params = params;
-       return (T) this;
-   }
+    public T params(Map<String, String> params) {
+
+        this.params = params;
+        return (T) this;
+    }
 }
