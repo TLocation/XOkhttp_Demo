@@ -3,6 +3,7 @@ package com.loction.xokhttp.response;
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.loction.xokhttp.XOkhttpClient;
+import com.loction.xokhttp.utils.MD5Encrypt;
 import com.loction.xokhttp.utils.Responseer;
 
 import java.io.IOException;
@@ -38,6 +39,7 @@ public abstract class GsonResponseHandler<T> implements IResponse {
 
         try {
             bodyStr = body.string();
+            bodyStr = MD5Encrypt.ss(bodyStr, XOkhttpClient.KEY_ENCOUPT);
         } catch (IOException e) {
             e.printStackTrace();
             XOkhttpClient.handler.post(new Runnable() {

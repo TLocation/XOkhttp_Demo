@@ -38,6 +38,9 @@ public class XOkhttpClient {
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
 
+    public static final String KEY_ENCOUPT = "wangshangyuanyang";
+
+
     public static Context mContext;
 
 
@@ -69,7 +72,9 @@ public class XOkhttpClient {
 
     public GetRequestBuilder get() {
         return new GetRequestBuilder(mOkHttpClient);
-    }public PostRequestBuilder post() {
+    }
+
+    public PostRequestBuilder post() {
         return new PostRequestBuilder(mOkHttpClient);
     }
 

@@ -53,7 +53,7 @@ public class MD5Encrypt {
 
     }
 
-    public String ss(String data, String key) {
+    public static  String ss(String data, String key) {
         String builder = new String();
         String encod = new String();
         key = MD5Utils.encrypt(key);
