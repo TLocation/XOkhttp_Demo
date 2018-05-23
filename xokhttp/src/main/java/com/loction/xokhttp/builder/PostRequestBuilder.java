@@ -38,6 +38,7 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
     @Override
     public void enqueue(IResponse iResponse) {
         Request.Builder builder = new Request.Builder();
+        //dsadsa
 //        String wangshangyuanyang = MD5Encrypt.encopt(bodyJson.toString(), XOkhttpClient.KEY_ENCOUPT);
 //        if (params == null) {
 //            params = new HashMap<>();
