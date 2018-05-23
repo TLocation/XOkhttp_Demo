@@ -33,19 +33,18 @@ public class MainActivity extends AppCompatActivity {
          */
         xOkhttpClient
                 .post()
-                .url("http://www.baidu.com")
-                .putBodyJson(jsonObject)
-                .putHeaderJson("user","123")
-                .putHeaderJson("ll","Nihap")
+                .url("http://www.wanandroid.com/user/login")
+                .addParam("username","tianxiaolong")
+                .addParam("password","tianxiaolong")
                 .enqueue(new IResponse() {
                     @Override
                     public void onSuccful(Response response) {
-
+                        android.util.Log.e("TAG","Succful");
                     }
 
                     @Override
                     public void onFail(int errorCode, String errorMessage) {
-
+                        android.util.Log.e("TAG","faial");
                     }
                 });
 

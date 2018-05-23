@@ -38,13 +38,13 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
     @Override
     public void enqueue(IResponse iResponse) {
         Request.Builder builder = new Request.Builder();
-        String wangshangyuanyang = MD5Encrypt.encopt(bodyJson.toString(), XOkhttpClient.KEY_ENCOUPT);
-        if (params == null) {
-            params = new HashMap<>();
-        }
-        params.put(XOkhttpClient.KEY_ENCOUPT, wangshangyuanyang);
-        Log.e("TAG", "json===>" + bodyJson.toString());
-        Log.e("TAG", "params===>" + params.toString());
+//        String wangshangyuanyang = MD5Encrypt.encopt(bodyJson.toString(), XOkhttpClient.KEY_ENCOUPT);
+//        if (params == null) {
+//            params = new HashMap<>();
+//        }
+//        params.put(XOkhttpClient.KEY_ENCOUPT, wangshangyuanyang);
+//        Log.e("TAG", "json===>" + bodyJson.toString());
+//        Log.e("TAG", "params===>" + params.toString());
         if (TextUtils.isEmpty(url)) {
             new RuntimeException("url == null");
         }
