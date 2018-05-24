@@ -50,6 +50,7 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
             new RuntimeException("url == null");
         }
         builder.url(url);
+
         appendHeaders(builder, headers);
         if (tag != null) {
             builder.tag(tag);

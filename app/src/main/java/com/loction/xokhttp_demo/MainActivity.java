@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         XOkhttpClient xOkhttpClient = new XOkhttpClient.Builder()
+                .setLog()
                 .builder();
         JSONObject jsonObject = new JSONObject();
         try {
