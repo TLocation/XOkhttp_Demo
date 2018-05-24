@@ -33,6 +33,7 @@ import lecho.lib.hellocharts.view.LineChartView;
 
 
 public class LinchatActivity extends AppCompatActivity {
+    /////dsadsa
     private LineChartView lineChart;
     String[] date = {"0","5.2","5.3","5.4"};//X轴的标注
     int[] score = {20,50,60,90};//图表的数据点
