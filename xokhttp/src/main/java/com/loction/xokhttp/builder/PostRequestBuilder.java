@@ -28,10 +28,7 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
         super(xOkhttpClient);
     }
 
-    public PostRequestBuilder putJson(String json) {
-        this.json = json;
-        return this;
-    }
+
 
 
     @Override

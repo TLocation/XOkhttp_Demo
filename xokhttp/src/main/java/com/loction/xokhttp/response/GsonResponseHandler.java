@@ -2,6 +2,8 @@ package com.loction.xokhttp.response;
 
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
+import com.google.gson.reflect.TypeToken;
+import com.loction.xokhttp.BaseResponse;
 import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.utils.MD5Encrypt;
 import com.loction.xokhttp.utils.Responseer;
@@ -17,21 +19,15 @@ import okhttp3.ResponseBody;
  * Created by localadmin on 2017/11/13.
  */
 
-public abstract class GsonResponseHandler<T> implements IResponse {
-    private Type mType;
+public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedType  {
     private String bodyStr;
 
     public GsonResponseHandler() {
 
-        Type myclass = getClass().getGenericSuperclass();    //反射获取带泛型的class
-        if (myclass instanceof Class) {
-            throw new RuntimeException("Missing type parameter.");
-        }
-        ParameterizedType parameter = (ParameterizedType) myclass;      //获取所有泛型
-        mType = $Gson$Types.canonicalize(parameter.getActualTypeArguments()[0]);  //将泛型转为type
+
     }
 
-    public abstract void onSuccful(Responseer<T> responseer);
+    public abstract void onSuccful(T response);
 
     @Override
     public void onSuccful(final Response response) {
@@ -39,7 +35,6 @@ public abstract class GsonResponseHandler<T> implements IResponse {
 
         try {
             bodyStr = body.string();
-            bodyStr = MD5Encrypt.ss(bodyStr, XOkhttpClient.KEY_ENCOUPT);
         } catch (IOException e) {
             e.printStackTrace();
             XOkhttpClient.handler.post(new Runnable() {
@@ -52,7 +47,7 @@ public abstract class GsonResponseHandler<T> implements IResponse {
         } finally {
             response.close();
         }
-
+        final Type gsonType = this;
         XOkhttpClient.handler.post(new Runnable() {
             @Override
             public void run() {
@@ -60,7 +55,11 @@ public abstract class GsonResponseHandler<T> implements IResponse {
                 /**
                  * 优化回调
                  */
-                onSuccful(new Responseer<T>((T) gson.fromJson(bodyStr, mType), response));
+//                onSuccful(new Responseer<T>((T) gson.fromJson(bodyStr, mType), response));
+                TypeToken<BaseResponse<T>> typeToken = new TypeToken<BaseResponse<T>>() {
+                };
+                BaseResponse<T> baseResponse = gson.fromJson(bodyStr, gsonType);
+                onSuccful(baseResponse.getData());
             }
         });
     }
@@ -68,5 +67,28 @@ public abstract class GsonResponseHandler<T> implements IResponse {
     @Override
     public void onFail(int errorCode, String errorMessage) {
 
+    }
+
+
+
+    @Override
+    public Type[] getActualTypeArguments() {
+        Class clz = this.getClass();
+        //这里必须注意在外面使用new GsonResponsePasare<GsonResponsePasare.DataInfo>(){};实例化时必须带上{},否则获取到的superclass为Object
+        Type superclass = clz.getGenericSuperclass(); //getGenericSuperclass()获得带有泛型的父类
+        if (superclass instanceof Class) {
+            throw new RuntimeException("Missing type parameter.");
+        }
+        ParameterizedType parameterized = (ParameterizedType) superclass;
+        return parameterized.getActualTypeArguments();
+    }
+
+    @Override
+    public Type getOwnerType() {
+        return null;
+    }
+    @Override
+    public Type getRawType() {
+        return BaseResponse.class;
     }
 }
