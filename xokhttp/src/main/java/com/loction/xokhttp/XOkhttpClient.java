@@ -256,11 +256,13 @@ public class XOkhttpClient {
         /**
          * 持久化cookie
          *
-         * @param cookiesManager Xokhttp内部的Cookie管理者  调用此方法需要指定XokkHttp、
-         *                       的Coontext对象
+         * 存储使用getSharedPreferences存储
+         * @param cookiesManager Xokhttp内部的Cookie管理者
+         *
          * @return
          */
-        private Builder setCookie(CookiesManager cookiesManager) {
+        private Builder setCookie(Context context,CookiesManager cookiesManager) {
+            XOkhttpClient.mContext =context;
             okhttpBuilder.cookieJar(cookiesManager);
             return this;
         }

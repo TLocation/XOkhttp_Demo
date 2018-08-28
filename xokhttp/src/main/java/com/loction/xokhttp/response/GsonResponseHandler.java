@@ -14,15 +14,19 @@ import okhttp3.ResponseBody;
 
 /**
  * Created by localadmin on 2017/11/13.
+ *
+ * update  2018/8/28
+ * 适配WanAndroid体系结构
+ * 这里填的泛型
+ * 为wanAndroid返回数据data内容所生成的实体类
+ * errCode为0是回调onSuccful方法
+ * 不为0时回调失败方法 onFail方法  并且返回错误码和失败原因
+ *
  */
 
 public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedType  {
     private String bodyStr;
 
-    public GsonResponseHandler() {
-
-
-    }
 
     public abstract void onSuccful(T response);
 
@@ -49,14 +53,16 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
             @Override
             public void run() {
                 Gson gson = new Gson();
-                /**
-                 * 优化回调
-                 */
 //                onSuccful(new Responseer<T>((T) gson.fromJson(bodyStr, mType), response));
                 TypeToken<BaseResponse<T>> typeToken = new TypeToken<BaseResponse<T>>() {
                 };
                 BaseResponse<T> baseResponse = gson.fromJson(bodyStr, gsonType);
-                onSuccful(baseResponse.getData());
+                if(baseResponse.getErrorCode()==0){
+                    onSuccful(baseResponse.getData());
+                }else{
+                    onFail(baseResponse.getErrorCode(),baseResponse.getErrorMsg());
+                }
+
             }
         });
     }
@@ -71,8 +77,8 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
     @Override
     public Type[] getActualTypeArguments() {
         Class clz = this.getClass();
-        //这里必须注意在外面使用new GsonResponsePasare<GsonResponsePasare.DataInfo>(){};实例化时必须带上{},否则获取到的superclass为Object
-        Type superclass = clz.getGenericSuperclass(); //getGenericSuperclass()获得带有泛型的父类
+
+        Type superclass = clz.getGenericSuperclass();
         if (superclass instanceof Class) {
             throw new RuntimeException("Missing type parameter.");
         }

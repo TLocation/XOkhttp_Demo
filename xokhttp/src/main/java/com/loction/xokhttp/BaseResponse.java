@@ -9,6 +9,10 @@ package com.loction.xokhttp;
 
 public class BaseResponse<T> {
 
+	/**
+	 * errorCode  为0成功
+	 *
+	 */
 	private int errorCode;
 	private String errorMsg;
 	private T data;

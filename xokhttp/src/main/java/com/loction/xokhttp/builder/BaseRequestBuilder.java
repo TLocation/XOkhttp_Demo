@@ -1,6 +1,7 @@
 package com.loction.xokhttp.builder;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.response.IResponse;
@@ -129,6 +130,20 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
         return (T) this;
     }
 
+
+    /**
+     * path请求参数
+     * @param key
+     * @param value
+     * @return
+     */
+    public T addPathParam(String key,String value){
+        if(TextUtils.isEmpty(url)){
+            throw  new NullPointerException("url==null");
+        }
+        url = url.replace("{"+key+"}",value);
+        return (T) this;
+    }
     /**
      * 内部调用拼接参数
      *
