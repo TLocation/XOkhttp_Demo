@@ -2,6 +2,7 @@ package com.loction.xokhttp_demo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.response.GsonResponseHandler;
@@ -12,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.temporal.ValueRange;
+import java.util.List;
 
 import okhttp3.Response;
 
@@ -24,31 +26,34 @@ public class MainActivity extends AppCompatActivity {
         XOkhttpClient xOkhttpClient = new XOkhttpClient.Builder()
                 .setLog()
                 .builder();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("name", "txl");
-            jsonObject.put("age", "12");
-        } catch (JSONException e) {
-            return;
-        }
+
         /**
          * userinfo
          * suername:xxx
          * pwd :sxx
          */
         xOkhttpClient
-                .post()
-                .url("http://www.wanandroid.com/user/login")
-                .addParam("username","tianxiaolong")
-                .addParam("password","tianxiaolong")
-                .enqueue(new GsonResponseHandler<TestBean>() {
+                .get()
+                .url("http://www.wanandroid.com/banner/json")
+                .enqueue(new GsonResponseHandler<List<AttrBean>>() {
                     @Override
-                    public void onSuccful(Responseer<TestBean> responseer) {
-                        TestBean body = responseer.body();
+                    public void onSuccful(List<AttrBean> response) {
+                        Log.d("haha", response.toString());
+
                     }
                 });
 
-
+      xOkhttpClient
+              .post()
+              .url("http://www.wanandroid.com/user/login")
+              .addParam("username","tianxiaolong")
+              .addParam("password","tianxiaolong")
+              .enqueue(new GsonResponseHandler<LoginResponse>() {
+                  @Override
+                  public void onSuccful(LoginResponse response) {
+                      Log.d("haha", response.toString());
+                  }
+              });
 
     }
 }

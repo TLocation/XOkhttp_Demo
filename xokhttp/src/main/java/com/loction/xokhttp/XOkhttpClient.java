@@ -38,7 +38,6 @@ public class XOkhttpClient {
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
 
-    public static final String KEY_ENCOUPT = "wangshangyuanyang";
 
 
     public static Context mContext;
