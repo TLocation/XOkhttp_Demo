@@ -4,10 +4,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.loction.xokhttp.XOkhttpClient;
+import com.loction.xokhttp.response.GsonResponseHandler;
 import com.loction.xokhttp.response.IResponse;
+import com.loction.xokhttp.utils.Responseer;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.time.temporal.ValueRange;
 
 import okhttp3.Response;
 
@@ -37,15 +41,10 @@ public class MainActivity extends AppCompatActivity {
                 .url("http://www.wanandroid.com/user/login")
                 .addParam("username","tianxiaolong")
                 .addParam("password","tianxiaolong")
-                .enqueue(new IResponse() {
+                .enqueue(new GsonResponseHandler<TestBean>() {
                     @Override
-                    public void onSuccful(Response response) {
-                        android.util.Log.e("TAG","Succful");
-                    }
-
-                    @Override
-                    public void onFail(int errorCode, String errorMessage) {
-                        android.util.Log.e("TAG","faial");
+                    public void onSuccful(Responseer<TestBean> responseer) {
+                        TestBean body = responseer.body();
                     }
                 });
 
