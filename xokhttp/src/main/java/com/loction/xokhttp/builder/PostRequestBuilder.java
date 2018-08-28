@@ -1,14 +1,10 @@
 package com.loction.xokhttp.builder;
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.callback.XCallBack;
 import com.loction.xokhttp.response.IResponse;
-import com.loction.xokhttp.utils.MD5Encrypt;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 

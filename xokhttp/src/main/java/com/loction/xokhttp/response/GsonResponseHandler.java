@@ -1,12 +1,9 @@
 package com.loction.xokhttp.response;
 
 import com.google.gson.Gson;
-import com.google.gson.internal.$Gson$Types;
 import com.google.gson.reflect.TypeToken;
 import com.loction.xokhttp.BaseResponse;
 import com.loction.xokhttp.XOkhttpClient;
-import com.loction.xokhttp.utils.MD5Encrypt;
-import com.loction.xokhttp.utils.Responseer;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;

@@ -1,10 +1,5 @@
 package com.loction.xokhttp.builder;
 
-import com.loction.xokhttp.utils.MD5Utils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
