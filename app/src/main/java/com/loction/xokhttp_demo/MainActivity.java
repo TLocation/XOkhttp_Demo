@@ -42,29 +42,13 @@ public class MainActivity extends AppCompatActivity {
          * suername:xxx
          * pwd :sxx
          */
-//        xOkhttpClient
-//                .get()
-//                .url("http://www.wanandroid.com/banner/json")
-//                .enqueue(new GsonResponseHandler<List<AttrBean>>() {
-//                    @Override
-//                    public void onSuccful(List<AttrBean> response) {
-//                        Log.d("haha", response.toString());
-//
-//                    }
-//                });
-
-
-        xOkhttpClient.get()
-                .url("http://www.wanandroid.com/article/list/{page}/json")
-                .addPathParam("page","0")
-                .enqueue(new RawResponseHandler() {
+        xOkhttpClient
+                .get()
+                .url("http://www.wanandroid.com/banner/json")
+                .enqueue(new GsonResponseHandler<List<AttrBean>>() {
                     @Override
-                    public void onSuccful(Responseer<String> responseer) {
-                          LogUtils.d(responseer.body());
-                    }
-
-                    @Override
-                    public void onFail(int errorCode, String errorMessage) {
+                    public void onSuccful(List<AttrBean> response) {
+                        Log.d("haha", response.toString());
 
                     }
                 });
@@ -74,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
       xOkhttpClient
               .post()
               .url("http://www.wanandroid.com/user/login")
-//              .addParam("username","tianxiaolong")
-//              .addParam("password","tianxiaolong")
+              .addParam("username","tianxiaolong")
+              .addParam("password","tianxiaolong")
               .enqueue(new GsonResponseHandler<LoginResponse>() {
                   @Override
                   public void onSuccful(LoginResponse response) {
@@ -83,5 +67,20 @@ public class MainActivity extends AppCompatActivity {
                   }
               });
 
+
+        xOkhttpClient.get()
+                .url("http://www.wanandroid.com/article/list/{page}/json")
+                .addPathParam("page","0")
+                .enqueue(new RawResponseHandler() {
+                    @Override
+                    public void onSuccful(Responseer<String> responseer) {
+                        LogUtils.d(responseer.body());
+                    }
+
+                    @Override
+                    public void onFail(int errorCode, String errorMessage) {
+
+                    }
+                });
     }
 }
