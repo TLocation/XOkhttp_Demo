@@ -2,7 +2,7 @@ package com.loction.xokhttp.response;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.loction.xokhttp.BaseResponse;
+import com.loction.xokhttp.IBaseResponse;
 import com.loction.xokhttp.XOkhttpClient;
 
 import java.io.IOException;
@@ -53,14 +53,13 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
             @Override
             public void run() {
                 Gson gson = new Gson();
-//                onSuccful(new Responseer<T>((T) gson.fromJson(bodyStr, mType), response));
-                TypeToken<BaseResponse<T>> typeToken = new TypeToken<BaseResponse<T>>() {
+                TypeToken<IBaseResponse<T>> typeToken = new TypeToken<IBaseResponse<T>>() {
                 };
-                BaseResponse<T> baseResponse = gson.fromJson(bodyStr, gsonType);
-                if(baseResponse.getErrorCode()==0){
+                IBaseResponse<T> baseResponse = gson.fromJson(bodyStr, gsonType);
+                if(baseResponse.isOk()){
                     onSuccful(baseResponse.getData());
                 }else{
-                    onFail(baseResponse.getErrorCode(),baseResponse.getErrorMsg());
+                    onFail(baseResponse.getStatusCode(),baseResponse.getErrorMsg());
                 }
 
             }
@@ -92,6 +91,6 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
     }
     @Override
     public Type getRawType() {
-        return BaseResponse.class;
+        return XOkhttpClient.aClass;
     }
 }

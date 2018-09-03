@@ -3,6 +3,7 @@ package com.loction.xokhttp_demo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.response.GsonResponseHandler;
@@ -32,26 +33,27 @@ public class MainActivity extends AppCompatActivity {
 //        HashMap<String, String> params = new HashMap<>();
 //        params.put("username","tianxiaolong");
 //        params.put("password","tianxiaolong");
+        XOkhttpClient.aClass = BaseResponse.class;
         XOkhttpClient xOkhttpClient = new XOkhttpClient.Builder()
 //                .addParams(params)
                 .setLog()
                 .builder();
 
-        /**
-         * userinfo
-         * suername:xxx
-         * pwd :sxx
-         */
-        xOkhttpClient
-                .get()
-                .url("http://www.wanandroid.com/banner/json")
-                .enqueue(new GsonResponseHandler<List<AttrBean>>() {
-                    @Override
-                    public void onSuccful(List<AttrBean> response) {
-                        Log.d("haha", response.toString());
-
-                    }
-                });
+//        /**
+//         * userinfo
+//         * suername:xxx
+//         * pwd :sxx
+//         */
+//        xOkhttpClient
+//                .get()
+//                .url("http://www.wanandroid.com/banner/json")
+//                .enqueue(new GsonResponseHandler<List<AttrBean>>() {
+//                    @Override
+//                    public void onSuccful(List<AttrBean> response) {
+//                        Log.d("haha", response.toString());
+//
+//                    }
+//                });
 
 
 
@@ -63,25 +65,26 @@ public class MainActivity extends AppCompatActivity {
               .enqueue(new GsonResponseHandler<LoginResponse>() {
                   @Override
                   public void onSuccful(LoginResponse response) {
+                      Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
                       Log.d("haha", response.toString());
                   }
               });
 
 
-        xOkhttpClient.get()
-                .url("http://www.wanandroid.com/article/list/{page}/json")
-                .addPathParam("page","0")
-                .enqueue(new RawResponseHandler() {
-                    @Override
-                    public void onSuccful(Responseer<String> responseer) {
-                        LogUtils.d(responseer.body());
-
-                    }
-
-                    @Override
-                    public void onFail(int errorCode, String errorMessage) {
-
-                    }
-                });
+//        xOkhttpClient.get()
+//                .url("http://www.wanandroid.com/article/list/{page}/json")
+//                .addPathParam("page","0")
+//                .enqueue(new RawResponseHandler() {
+//                    @Override
+//                    public void onSuccful(Responseer<String> responseer) {
+//                        LogUtils.d(responseer.body());
+//
+//                    }
+//
+//                    @Override
+//                    public void onFail(int errorCode, String errorMessage) {
+//
+//                    }
+//                });
     }
 }

@@ -37,7 +37,7 @@ public class XOkhttpClient {
     private static XOkhttpClient xOkhttpClient;
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
-
+    public static Class<? extends IBaseResponse> aClass;
 
 
     public static Context mContext;
