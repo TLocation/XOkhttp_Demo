@@ -7,6 +7,7 @@ import okhttp3.Response;
  */
 
 public interface IResponse {
+
     void onSuccful(Response response);
 
     void onFail(int errorCode, String errorMessage);

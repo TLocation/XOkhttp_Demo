@@ -37,7 +37,7 @@ public class XOkhttpClient {
     private static XOkhttpClient xOkhttpClient;
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
-    public static Class<? extends IBaseResponse> aClass;
+    public  static Class<? extends IBaseResponse> baseClass;
 
 
     public static Context mContext;
@@ -205,6 +205,11 @@ public class XOkhttpClient {
             return this;
         }
 
+
+        public Builder setBaseClass(Class<? extends IBaseResponse> baseClass){
+            XOkhttpClient.baseClass = baseClass;
+            return this;
+        }
         /**
          * 添加公共的请求头
          * 注释查看

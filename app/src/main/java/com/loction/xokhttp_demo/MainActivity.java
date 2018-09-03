@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
 //        HashMap<String, String> params = new HashMap<>();
 //        params.put("username","tianxiaolong");
 //        params.put("password","tianxiaolong");
-        XOkhttpClient.aClass = BaseResponse.class;
+
         XOkhttpClient xOkhttpClient = new XOkhttpClient.Builder()
 //                .addParams(params)
+                .setBaseClass(BaseResponse.class)
                 .setLog()
                 .builder();
 

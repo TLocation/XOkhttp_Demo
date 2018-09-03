@@ -91,6 +91,9 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
     }
     @Override
     public Type getRawType() {
-        return XOkhttpClient.aClass;
+        if(XOkhttpClient.baseClass==null){
+            new NullPointerException("baseclass null you need Initialize the baseclass");
+        }
+        return XOkhttpClient.baseClass;
     }
 }
