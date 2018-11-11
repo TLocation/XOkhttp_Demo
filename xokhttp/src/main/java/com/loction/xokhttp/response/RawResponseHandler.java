@@ -23,7 +23,7 @@ public abstract class RawResponseHandler implements IResponse {
     @Override
     public void onSuccful(final Response response) {
         final ResponseBody body = response.body();
-        String bodyStr;
+        final String bodyStr;
         try {
             bodyStr = body.string();
         } catch (IOException e) {
@@ -38,7 +38,13 @@ public abstract class RawResponseHandler implements IResponse {
         } finally {
             response.close();
         }
-        onSuccful(new Responseer<String>(bodyStr, response));
+        XOkhttpClient.handler.post(new Runnable() {
+            @Override
+            public void run() {
+                onSuccful(new Responseer<String>(bodyStr, response));
+            }
+        });
+
 
     }
 

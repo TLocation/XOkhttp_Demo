@@ -39,8 +39,6 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
         if (tag != null) {
             builder.tag(tag);
         }
-
-
         if (cacheControl != null) {
             builder.cacheControl(cacheControl);
         }

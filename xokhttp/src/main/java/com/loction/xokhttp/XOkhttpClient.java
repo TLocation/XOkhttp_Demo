@@ -6,6 +6,7 @@ import android.os.Looper;
 
 import com.loction.xokhttp.builder.GetRequestBuilder;
 import com.loction.xokhttp.builder.PostRequestBuilder;
+import com.loction.xokhttp.builder.UpdateRequestBuilder;
 import com.loction.xokhttp.cookie.CookiesManager;
 import com.loction.xokhttp.utils.HttpsUtils;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
+import okhttp3.Call;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -77,6 +79,22 @@ public class XOkhttpClient {
         return new PostRequestBuilder(mOkHttpClient);
     }
 
+
+    public UpdateRequestBuilder upload(){return new UpdateRequestBuilder(mOkHttpClient);}
+
+    public void cancelTag(Object tag) {
+        if (tag == null) return;
+        for (Call call : mOkHttpClient.dispatcher().queuedCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+        for (Call call : mOkHttpClient.dispatcher().runningCalls()) {
+            if (tag.equals(call.request().tag())) {
+                call.cancel();
+            }
+        }
+    }
     /**
      * 构建者类
      */
@@ -85,12 +103,16 @@ public class XOkhttpClient {
         private final String METHOD_POST = "POST";
         private OkHttpClient.Builder okhttpBuilder;
 
+        public Builder(OkHttpClient.Builder builder) {
+            if (okhttpBuilder == null) {
+                okhttpBuilder = builder;
+            }
+        }
         public Builder() {
             if (okhttpBuilder == null) {
                 okhttpBuilder = new OkHttpClient.Builder();
             }
         }
-
         /**
          * 设置连接超时
          *

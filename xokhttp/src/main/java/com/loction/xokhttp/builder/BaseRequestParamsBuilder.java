@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
  */
 
 public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilder> extends
-        BaseRequestBuilder<BaseRequestParamsBuilder> {
+        BaseRequestBuilder<T> {
     protected Map<String, String> params;
     protected String json;
 
