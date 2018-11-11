@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 				.build().newBuilder())
 //                .addParams(params)
 //				.addHeards(headers)
+				.setCache(this,1024*10*10,300000)
 				.setBaseClass(BaseResponse.class)
 				.setLog()
 				.builder();

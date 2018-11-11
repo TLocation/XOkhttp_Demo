@@ -33,7 +33,6 @@ public class ProgressRequestBody extends RequestBody {
 	protected final ProgressInfo mProgressInfo;
 	private BufferedSink mBufferedSink;
 	private UploadResponse listener;
-	private int writeStatus = 0;
 
 	public ProgressRequestBody(RequestBody delegate, UploadResponse uploadResponse) {
 		this.mDelegate = delegate;
@@ -58,15 +57,16 @@ public class ProgressRequestBody extends RequestBody {
 
 	@Override
 	public void writeTo(@NonNull BufferedSink sink) throws IOException {
-		mBufferedSink = Okio.buffer(new CountingSink(sink));
+		if (sink instanceof Buffer) {
+			// Log Interceptor
+			mDelegate.writeTo(sink);
+			return;
+		}
+		if (mBufferedSink == null) {
+			mBufferedSink = Okio.buffer(new CountingSink(sink));
+		}
 		mDelegate.writeTo(mBufferedSink);
 		mBufferedSink.flush();
-		if (writeStatus == 0) {
-			writeStatus = 1;
-
-		} else {
-			writeStatus = -1;
-		}
 	}
 
 	protected final class CountingSink extends ForwardingSink {
@@ -81,9 +81,6 @@ public class ProgressRequestBody extends RequestBody {
 		@Override
 		public void write(Buffer source, final long byteCount) throws IOException {
 			super.write(source, byteCount);
-			if (writeStatus != 1) {
-				return;
-			}
 			if (contentLength == 0) {
 				//获得contentLength的值，后续不再调用
 				contentLength = contentLength();
