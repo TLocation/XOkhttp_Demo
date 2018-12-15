@@ -34,7 +34,7 @@ public class XCallBack implements Callback {
     public void onResponse(final Call call, final Response response) throws IOException {
         if (response.isSuccessful()) {
 
-            iResponse.onSuccful(response);
+            iResponse.onSuccessful(response);
         } else {
             XOkhttpClient.handler.post(new Runnable() {
                 @Override

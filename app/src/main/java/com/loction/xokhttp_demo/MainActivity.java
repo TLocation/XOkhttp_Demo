@@ -25,11 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.jessyan.progressmanager.ProgressListener;
-import me.jessyan.progressmanager.ProgressManager;
-import me.jessyan.progressmanager.body.ProgressInfo;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,64 +36,33 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		/**
-		 * 公共参数
-		 */
-//        HashMap<String, String> params = new HashMap<>();
-//        params.put("username","tianxiaolong");
-//        params.put("password","tianxiaolong");
 
-		//                .addParams(params)
-		HashMap<String, String> headers = new HashMap<>();
-		headers.put("Connection", "close");
-		xOkhttpClient = new XOkhttpClient.Builder(ProgressManager.getInstance().with(new OkHttpClient.Builder())
-				.build().newBuilder())
-//                .addParams(params)
-//				.addHeards(headers)
-				.setCache(this,1024*10*10,300000)
+		xOkhttpClient = new XOkhttpClient.Builder()
 				.setBaseClass(BaseResponse.class)
-				.setLog()
 				.builder();
-		findViewById(R.id.main_get).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				xOkhttpClient.get()
-						.url("http://wanandroid.com/wxarticle/chapters/json")
-						.enqueue(new RawResponseHandler() {
-							@Override
-							public void onSuccful(Responseer<String> responseer) {
-								String body = responseer.body();
-//                          Toast.makeText(MainActivity.this, body, Toast.LENGTH_SHORT).show();
-							}
-
-							@Override
-							public void onFail(int errorCode, String errorMessage) {
-//                          Toast.makeText(MainActivity.this, "是bai", Toast.LENGTH_SHORT).show();
-							}
-						});
-			}
-		});
-
-
-		xOkhttpClient
-				.post()
-				.url("http://www.wanandroid.com/user/login")
-				.addParam("username", "tianxiaolong")
-				.addParam("password", "tianxiaolong")
-				.enqueue(new GsonResponseHandler<LoginResponse>() {
+		xOkhttpClient.get().url("http://www.wanandroid.com/project/list/{page}/json")
+				.addPathParam("page","0")
+				.addParam("cid","294")
+				.enqueue(new GsonResponseHandler<DayaBean>() {
 					@Override
-					public void onSuccful(LoginResponse response) {
-						Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-						Log.d("haha", response.toString());
+					public void onSuccessful(DayaBean response) {
+						LogUtils.d("test", response.toString());
 					}
 				});
-
-
-		findViewById(R.id.main_upload)
-				.setOnClickListener(new View.OnClickListener() {
+		xOkhttpClient.post()
+				.url("http://www.wanandroid.com/article/query/{page}/json")
+				.addPathParam("page","0")
+				.addParam("k","TextView")
+				.enqueue(new GsonResponseHandler<SeachBean>() {
 					@Override
-					public void onClick(View v) {
-						openPicture();
+					public void onSuccessful(SeachBean response) {
+						LogUtils.d("test", "seachbean===>"+response.toString());
+					}
+
+					@Override
+					public void onFail(int errorCode, String errorMessage) {
+						super.onFail(errorCode, errorMessage);
+						LogUtils.d("test", "error===>" + errorMessage);
 					}
 				});
 
@@ -123,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 					}
 
 					@Override
-					public void onUploadSuccful(com.loction.xokhttp_demo.UploadResponse response) {
+					public void onUploadSuccessful(com.loction.xokhttp_demo.UploadResponse response) {
 						Log.d("testss", "上传成功" + response.getData().getUrl());
 					}
 

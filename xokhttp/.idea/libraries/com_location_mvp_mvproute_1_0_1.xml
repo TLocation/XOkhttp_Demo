@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.location.mvp:mvproute-1.0.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mvproute-1.0.1.aar/2a3efa642692d0766652473ac27870cc/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mvproute-1.0.1.aar/2a3efa642692d0766652473ac27870cc/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.location.mvp/mvproute/1.0.1/c23fc5d4db55027c5f5bd3577ca18364a89976db/mvproute-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

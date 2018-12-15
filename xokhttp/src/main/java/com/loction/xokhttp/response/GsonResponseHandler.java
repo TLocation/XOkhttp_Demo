@@ -28,10 +28,10 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
     private String bodyStr;
 
 
-    public abstract void onSuccful(T response);
+    public abstract void onSuccessful(T response);
 
     @Override
-    public void onSuccful(final Response response) {
+    public void onSuccessful(final Response response) {
         final ResponseBody body = response.body();
 
         try {
@@ -57,7 +57,7 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
                 };
                 IBaseResponse<T> baseResponse = gson.fromJson(bodyStr, gsonType);
                 if(baseResponse.isOk()){
-                    onSuccful(baseResponse.getData());
+                    onSuccessful(baseResponse.getData());
                 }else{
                     onFail(baseResponse.getStatusCode(),baseResponse.getErrorMsg());
                 }
@@ -91,9 +91,9 @@ public abstract class GsonResponseHandler<T> implements IResponse,ParameterizedT
     }
     @Override
     public Type getRawType() {
-        if(XOkhttpClient.baseClass==null){
+        if(XOkhttpClient.getXOkHttp().getBaseClass()==null){
             throw new NullPointerException("baseclass null you need Initialize the baseclass");
         }
-        return XOkhttpClient.baseClass;
+        return XOkhttpClient.getXOkHttp().getBaseClass();
     }
 }

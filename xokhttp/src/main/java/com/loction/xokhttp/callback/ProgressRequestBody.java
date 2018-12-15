@@ -1,9 +1,5 @@
 package com.loction.xokhttp.callback;
 
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.RecoverySystem;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -29,14 +25,12 @@ import okio.Sink;
  */
 
 public class ProgressRequestBody extends RequestBody {
-	protected final RequestBody mDelegate;
-	protected final ProgressInfo mProgressInfo;
+	private final RequestBody mDelegate;
 	private BufferedSink mBufferedSink;
 	private UploadResponse listener;
 
 	public ProgressRequestBody(RequestBody delegate, UploadResponse uploadResponse) {
 		this.mDelegate = delegate;
-		this.mProgressInfo = new ProgressInfo(System.currentTimeMillis());
 		this.listener = uploadResponse;
 	}
 

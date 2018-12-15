@@ -1,12 +1,8 @@
 package com.loction.xokhttp.response;
 
 import com.loction.xokhttp.XOkhttpClient;
-import com.loction.xokhttp.utils.Responseer;
-
-import java.io.IOException;
 
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * 项目:趣租部落
@@ -18,27 +14,50 @@ import okhttp3.ResponseBody;
 public abstract class UploadResponse<T> implements IResponse {
 
 
-
-
+	/**
+	 * 正常上传
+	 *
+	 * @param uploadLength  已上传大小
+	 * @param contentLength 总大小
+	 */
 	public abstract void onProgress(long uploadLength, long contentLength);
 
+	/**
+	 * 上传完成
+	 *
+	 * @param contentLength
+	 */
 	public abstract void uploadDone(long contentLength);
 
 	@Override
-	public void onSuccful(Response response) {
+	public void onSuccessful(final Response response) {
+		if (response.isSuccessful()) {
+
+			successfulPost(response);
+		} else {
+			XOkhttpClient.handler.post(new Runnable() {
+				@Override
+				public void run() {
+					onFail(response.code(), response.message());
+				}
+			});
+		}
+	}
+
+	private void successfulPost(Response response) {
 		GsonResponse<T> gsonResponseHandler = new GsonResponse<T>() {
 			@Override
-			public void onSuccful(T response) {
-				onUploadSuccful(response);
+			public void onSuccessful(T response) {
+				onUploadSuccessful(response);
 			}
 
 			@Override
 			public void onFail(int errorCode, String errorMessage) {
-				UploadResponse.this.onFail(errorCode,errorMessage);
+				UploadResponse.this.onFail(errorCode, errorMessage);
 			}
 		};
-		gsonResponseHandler.onSuccful(response);
+		gsonResponseHandler.onSuccessful(response);
 	}
 
-	public abstract void onUploadSuccful(T response);
+	public abstract void onUploadSuccessful(T response);
 }

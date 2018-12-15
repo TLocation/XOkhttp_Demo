@@ -21,7 +21,7 @@ import okhttp3.ResponseBody;
 
 public abstract class RawResponseHandler implements IResponse {
     @Override
-    public void onSuccful(final Response response) {
+    public void onSuccessful(final Response response) {
         final ResponseBody body = response.body();
         final String bodyStr;
         try {
@@ -41,12 +41,12 @@ public abstract class RawResponseHandler implements IResponse {
         XOkhttpClient.handler.post(new Runnable() {
             @Override
             public void run() {
-                onSuccful(new Responseer<String>(bodyStr, response));
+                onSuccful(bodyStr);
             }
         });
 
 
     }
 
-    public abstract void onSuccful(Responseer<String> responseer);
+    public abstract void onSuccful(String bodyStr);
 }

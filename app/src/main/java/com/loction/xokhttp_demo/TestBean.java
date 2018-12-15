@@ -1,5 +1,7 @@
 package com.loction.xokhttp_demo;
 
+import com.loction.xokhttp.XOkhttpClient;
+
 /**
  * 项目名称: WanAndroid
  * 类描述:
@@ -15,6 +17,7 @@ public class TestBean {
     private String name;
 
     public String getName() {
+
         return name;
     }
 

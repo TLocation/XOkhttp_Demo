@@ -39,11 +39,27 @@ public class XOkhttpClient {
     private static XOkhttpClient xOkhttpClient;
     private OkHttpClient mOkHttpClient;
     public static Handler handler;
-    public  static Class<? extends IBaseResponse> baseClass;
+    private  Class<? extends IBaseResponse> baseClass;
 
 
-    public static Context mContext;
+    private   Context mContext;
 
+
+    public Class<? extends IBaseResponse> getBaseClass() {
+        return baseClass;
+    }
+
+     void setBaseClass(Class<? extends IBaseResponse> baseClass) {
+        this.baseClass = baseClass;
+    }
+
+    public Context getmContext() {
+        return mContext;
+    }
+
+     void setmContext(Context mContext) {
+        this.mContext = mContext;
+    }
 
     private XOkhttpClient(OkHttpClient okHttpClient) {
         if (okHttpClient == null) {
@@ -53,22 +69,25 @@ public class XOkhttpClient {
         }
         handler = new Handler(Looper.getMainLooper());
     }
-
-
-    public static XOkhttpClient getXOkHttp(OkHttpClient okHttpClient) {
-        if (xOkhttpClient == null) {
-            synchronized (XOkhttpClient.class) {
-                if (xOkhttpClient == null) {
-                    xOkhttpClient = new XOkhttpClient(okHttpClient);
-                }
+     static XOkhttpClient  initClient(OkHttpClient okHttpClient){
+    if (xOkhttpClient == null) {
+        synchronized (XOkhttpClient.class) {
+            if (xOkhttpClient == null) {
+                xOkhttpClient = new XOkhttpClient(okHttpClient);
             }
+        }
+    }
+    return xOkhttpClient;
+}
+
+    public static XOkhttpClient getXOkHttp() {
+        if(xOkhttpClient==null){
+            throw new NullPointerException("you need initialize XokhttpClient");
         }
         return xOkhttpClient;
     }
 
-    public static XOkhttpClient getXOkhttp() {
-        return getXOkHttp(null);
-    }
+
 
 
     public GetRequestBuilder get() {
@@ -102,6 +121,8 @@ public class XOkhttpClient {
         private final String METHOD_GET = "GET";
         private final String METHOD_POST = "POST";
         private OkHttpClient.Builder okhttpBuilder;
+        private Context context;
+        private   Class<? extends IBaseResponse> baseclazz;
 
         public Builder(OkHttpClient.Builder builder) {
             if (okhttpBuilder == null) {
@@ -229,7 +250,7 @@ public class XOkhttpClient {
 
 
         public Builder setBaseClass(Class<? extends IBaseResponse> baseClass){
-            XOkhttpClient.baseClass = baseClass;
+            this.baseclazz = baseClass;
             return this;
         }
         /**
@@ -289,7 +310,7 @@ public class XOkhttpClient {
          * @return
          */
         private Builder setCookie(Context context,CookiesManager cookiesManager) {
-            XOkhttpClient.mContext =context;
+            this.context =context;
             okhttpBuilder.cookieJar(cookiesManager);
             return this;
         }
@@ -407,7 +428,14 @@ public class XOkhttpClient {
         };
 
         public XOkhttpClient builder() {
-            return XOkhttpClient.getXOkHttp(okhttpBuilder.build());
+            XOkhttpClient xOkhttpClient = initClient(okhttpBuilder.build());
+            if(context!=null){
+                xOkhttpClient.setmContext(context);
+            }
+            if(baseclazz!=null){
+                xOkhttpClient.setBaseClass(baseclazz);
+            }
+            return xOkhttpClient;
         }
     }
 }

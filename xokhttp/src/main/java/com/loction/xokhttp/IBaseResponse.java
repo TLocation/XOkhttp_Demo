@@ -8,12 +8,28 @@ package com.loction.xokhttp;
  */
 
 public interface IBaseResponse<T> {
+	/**
+	 * 正真实体类
+	 * @return
+	 */
 	T getData();
 
+	/**
+	 * 状态码
+	 * @return
+	 */
 	int getStatusCode();
 
+	/**
+	 * 异常信息
+	 * @return
+	 */
 	String getErrorMsg();
 
+	/**
+	 * 请求是否成功
+	 * @return
+	 */
 	boolean isOk();
 
 

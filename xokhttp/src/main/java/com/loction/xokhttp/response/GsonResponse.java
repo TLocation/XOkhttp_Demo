@@ -1,7 +1,5 @@
 package com.loction.xokhttp.response;
 
-import android.view.View;
-
 import com.google.gson.Gson;
 import com.google.gson.internal.$Gson$Types;
 import com.loction.xokhttp.XOkhttpClient;
@@ -9,7 +7,6 @@ import com.loction.xokhttp.XOkhttpClient;
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.logging.Handler;
 
 import okhttp3.Response;
 
@@ -22,6 +19,7 @@ import okhttp3.Response;
 
 public abstract class GsonResponse<T> implements IResponse {
 	private final Type mType;
+
 	public GsonResponse() {
 		Type myclass = getClass().getGenericSuperclass();
 		if (myclass instanceof Class) {
@@ -30,29 +28,38 @@ public abstract class GsonResponse<T> implements IResponse {
 		ParameterizedType parameter = (ParameterizedType) myclass;
 		mType = $Gson$Types.canonicalize(parameter.getActualTypeArguments()[0]);
 	}
-abstract void onSuccful(T response);
+
+	abstract void onSuccessful(T response);
+
 	@Override
-	public void onSuccful(Response response) {
-        if(response.isSuccessful()){
+	public void onSuccessful(final Response response) {
+		if (response.isSuccessful()) {
 			try {
 				final String string = response.body().string();
 				XOkhttpClient.handler.post(new Runnable() {
 					@Override
 					public void run() {
 						Gson gson = new Gson();
-						onSuccful((T) gson.fromJson(string,mType));
+						onSuccessful((T) gson.fromJson(string, mType));
 					}
 				});
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 				XOkhttpClient.handler.post(new Runnable() {
 
 					@Override
 					public void run() {
-
+             onFail(0,e.getMessage());
 					}
 				});
 			}
+		}else{
+			XOkhttpClient.handler.post(new Runnable() {
+				@Override
+				public void run() {
+				onFail(response.code(),response.message());
+				}
+			});
 		}
 	}
 
