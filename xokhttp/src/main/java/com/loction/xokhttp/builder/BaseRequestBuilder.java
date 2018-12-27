@@ -42,8 +42,9 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
      */
     protected CacheControl cacheControl;
 
-    public BaseRequestBuilder(OkHttpClient xOkhttpClient) {
+    public BaseRequestBuilder(OkHttpClient xOkhttpClient,Object tag) {
         this.xOkhttpClient = xOkhttpClient;
+        this.tag = tag;
     }
 
     /**
@@ -83,17 +84,7 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
         return (T) this;
     }
 
-    /**
-     * 添加标记 tag
-     *
-     * @param tag
-     * @return
-     */
-    public T tag(Object tag) {
-        this.tag = tag;
 
-        return (T) this;
-    }
 
     /**
      * 设置缓存模式为只读缓存

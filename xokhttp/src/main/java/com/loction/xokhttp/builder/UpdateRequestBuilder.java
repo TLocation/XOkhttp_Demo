@@ -26,8 +26,8 @@ public class UpdateRequestBuilder extends BaseRequestParamsBuilder<UpdateRequest
 
 	private Map<String, File> files;
 
-	public UpdateRequestBuilder(OkHttpClient xOkhttpClient) {
-		super(xOkhttpClient);
+	public UpdateRequestBuilder(OkHttpClient xOkhttpClient, Object tag) {
+		super(xOkhttpClient, tag);
 	}
 
 

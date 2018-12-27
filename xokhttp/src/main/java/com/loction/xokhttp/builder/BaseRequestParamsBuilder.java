@@ -14,8 +14,9 @@ public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilde
     protected Map<String, String> params;
     protected String json;
 
-
-
+    public BaseRequestParamsBuilder(OkHttpClient xOkhttpClient, Object tag) {
+        super(xOkhttpClient, tag);
+    }
 
 
     public T putJson(String json) {
@@ -27,9 +28,7 @@ public abstract class BaseRequestParamsBuilder<T extends BaseRequestParamsBuilde
 
 
 
-    public BaseRequestParamsBuilder(OkHttpClient xOkhttpClient) {
-        super(xOkhttpClient);
-    }
+
 
 
     /***

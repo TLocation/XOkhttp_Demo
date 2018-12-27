@@ -17,8 +17,8 @@ import okhttp3.Request;
 public class GetRequestBuilder extends BaseRequestParamsBuilder<GetRequestBuilder> {
 
 
-    public GetRequestBuilder(OkHttpClient xOkhttpClient) {
-        super(xOkhttpClient);
+    public GetRequestBuilder(OkHttpClient xOkhttpClient, Object tag) {
+        super(xOkhttpClient, tag);
     }
 
     @Override

@@ -20,12 +20,10 @@ import okhttp3.RequestBody;
 
 public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuilder> {
 
-    public PostRequestBuilder(OkHttpClient xOkhttpClient) {
-        super(xOkhttpClient);
+
+    public PostRequestBuilder(OkHttpClient xOkhttpClient, Object tag) {
+        super(xOkhttpClient, tag);
     }
-
-
-
 
     @Override
     public void enqueue(IResponse iResponse) {

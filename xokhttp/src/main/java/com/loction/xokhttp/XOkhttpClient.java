@@ -3,6 +3,8 @@ package com.loction.xokhttp;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 
 import com.loction.xokhttp.builder.GetRequestBuilder;
 import com.loction.xokhttp.builder.PostRequestBuilder;
@@ -90,17 +92,12 @@ public class XOkhttpClient {
 
 
 
-    public GetRequestBuilder get() {
-        return new GetRequestBuilder(mOkHttpClient);
-    }
-
-    public PostRequestBuilder post() {
-        return new PostRequestBuilder(mOkHttpClient);
-    }
-
-
-    public UpdateRequestBuilder upload(){return new UpdateRequestBuilder(mOkHttpClient);}
-
+    public LifecycleManager with(FragmentActivity context){
+		return new LifecycleManager(mOkHttpClient, context);
+	}
+	public  LifecycleManager with(Fragment context){
+		return new LifecycleManager(mOkHttpClient, context);
+	}
     public void cancelTag(Object tag) {
         if (tag == null) return;
         for (Call call : mOkHttpClient.dispatcher().queuedCalls()) {

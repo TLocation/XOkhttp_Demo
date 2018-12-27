@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 		xOkhttpClient = new XOkhttpClient.Builder()
 				.setBaseClass(BaseResponse.class)
 				.builder();
-		xOkhttpClient.get().url("http://www.wanandroid.com/project/list/{page}/json")
+		xOkhttpClient.with(this).get().url("http://www.wanandroid.com/project/list/{page}/json")
 				.addPathParam("page","0")
 				.addParam("cid","294")
 				.enqueue(new GsonResponseHandler<DayaBean>() {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 						LogUtils.d("test", response.toString());
 					}
 				});
-		xOkhttpClient.post()
+		xOkhttpClient.with(this).post()
 				.url("http://www.wanandroid.com/article/query/{page}/json")
 				.addPathParam("page","0")
 				.addParam("k","TextView")
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private void uploadFile(File file) {
 
-		xOkhttpClient.upload()
+		xOkhttpClient.with(this).upload()
 				.addFile("file", file)
 				.url("http://hb5.api.okayapi.com/?s=App.CDN.UploadImg&app_key=A7C413FD1FDAC974F64996121A95F417")
 //                .addParam("app_key","A7C413FD1FDAC974F64996121A95F417")
