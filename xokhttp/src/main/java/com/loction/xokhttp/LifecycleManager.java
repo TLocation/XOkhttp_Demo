@@ -19,11 +19,17 @@ import okhttp3.OkHttpClient;
  * @author tianxiaolong
  *         time：2018/12/27 18:55
  *         description：
+ *
  */
 
 public class LifecycleManager implements LifecycleObserver {
 	private Object tag;
 	private OkHttpClient client;
+
+	private boolean reStartRequest;
+
+	private int cancelType;
+
 
 	public LifecycleManager(OkHttpClient client, FragmentActivity context) {
 		if (isRunUiThread()) {
@@ -44,6 +50,7 @@ public class LifecycleManager implements LifecycleObserver {
 		}
 		this.client = client;
 	}
+
 	public LifecycleManager(OkHttpClient client, Context context) {
 		if (isRunUiThread()) {
 			tag = context;
@@ -52,13 +59,36 @@ public class LifecycleManager implements LifecycleObserver {
 		}
 		this.client = client;
 	}
+
+	private void initConfig(){
+		// do nothing
+	}
+
+
+	public LifecycleManager reStartRequest(){
+		reStartRequest = true;
+		return this;
+	}
+
+	public LifecycleManager  setCancelTiming(@CancelType.CancelState int state){
+		cancelType = state;
+		return this;
+	}
+
+
 	private boolean isRunUiThread() {
 		return Looper.getMainLooper() == Looper.myLooper();
 	}
 
+
+	@OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+	private void onPause(){
+		Logs.I("LifecycleManager in onPause");
+	}
+
 	@OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
 	private void onDestroy() {
-		Log.d("TAG", "cancel http request");
+		Logs.I("LifecycleManager in onDestroy");
 		XOkhttpClient.getXOkHttp().cancelTag(tag);
 	}
 

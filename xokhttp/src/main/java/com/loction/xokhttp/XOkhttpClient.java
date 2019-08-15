@@ -3,6 +3,7 @@ package com.loction.xokhttp;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -102,19 +103,47 @@ public class XOkhttpClient {
 	public LifecycleManager with(Context context){
         return new LifecycleManager(mOkHttpClient, context);
     }
-    public void cancelTag(Object tag) {
-        if (tag == null) return;
+
+    /**
+     *  cancel http request
+     * @param tag
+     */
+     void cancelTag(Object tag) {
+         Call requestCall = findRequestCall(tag);
+
+         if(requestCall != null){
+             requestCall.cancel();
+         }
+
+     }
+
+    Call cancelTagReStart(Object tag){
+        Call requestCall = findRequestCall(tag);
+        Call cloneCall = null;
+        if(requestCall != null){
+            cloneCall = requestCall.clone();
+            requestCall.cancel();
+        }
+        return cloneCall;
+    }
+
+
+    private @Nullable Call findRequestCall(Object tag){
+        if(tag == null)return null;
         for (Call call : mOkHttpClient.dispatcher().queuedCalls()) {
             if (tag.equals(call.request().tag())) {
-                call.cancel();
+                return call;
             }
         }
+
         for (Call call : mOkHttpClient.dispatcher().runningCalls()) {
             if (tag.equals(call.request().tag())) {
-                call.cancel();
+                return call;
             }
         }
+        return null;
     }
+
     /**
      * 构建者类
      */
