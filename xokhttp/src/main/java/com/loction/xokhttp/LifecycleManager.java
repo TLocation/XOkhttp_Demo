@@ -1,6 +1,5 @@
 package com.loction.xokhttp;
 
-import android.app.Activity;
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleObserver;
 import android.arch.lifecycle.OnLifecycleEvent;
@@ -45,14 +44,21 @@ public class LifecycleManager implements LifecycleObserver {
 		}
 		this.client = client;
 	}
-
+	public LifecycleManager(OkHttpClient client, Context context) {
+		if (isRunUiThread()) {
+			tag = context;
+		} else{
+			tag = context.getApplicationContext();
+		}
+		this.client = client;
+	}
 	private boolean isRunUiThread() {
 		return Looper.getMainLooper() == Looper.myLooper();
 	}
 
 	@OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
 	private void onDestroy() {
-		Log.d("TAG", "Ondesss"+"\ncode===>"+hashCode());
+		Log.d("TAG", "cancel http request");
 		XOkhttpClient.getXOkHttp().cancelTag(tag);
 	}
 

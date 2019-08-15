@@ -98,6 +98,10 @@ public class XOkhttpClient {
 	public  LifecycleManager with(Fragment context){
 		return new LifecycleManager(mOkHttpClient, context);
 	}
+
+	public LifecycleManager with(Context context){
+        return new LifecycleManager(mOkHttpClient, context);
+    }
     public void cancelTag(Object tag) {
         if (tag == null) return;
         for (Call call : mOkHttpClient.dispatcher().queuedCalls()) {
