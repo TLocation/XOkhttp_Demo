@@ -7,8 +7,10 @@ import android.content.Context;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.telecom.Call;
 import android.util.Log;
 
+import com.loction.xokhttp.builder.BaseRequestBuilder;
 import com.loction.xokhttp.builder.GetRequestBuilder;
 import com.loction.xokhttp.builder.PostRequestBuilder;
 import com.loction.xokhttp.builder.UpdateRequestBuilder;
@@ -29,6 +31,10 @@ public class LifecycleManager implements LifecycleObserver {
 	private boolean reStartRequest;
 
 	private int cancelType;
+
+	private okhttp3.Call reStartCall;
+
+	private BaseRequestBuilder requestBuilder;
 
 
 	public LifecycleManager(OkHttpClient client, FragmentActivity context) {
@@ -81,26 +87,51 @@ public class LifecycleManager implements LifecycleObserver {
 	}
 
 
+	@OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+	private void onResume(){
+		Logs.I("LifecycleManager in onResume");
+		if(reStartCall != null && requestBuilder != null){
+			Logs.I("re start request http");
+			  requestBuilder.requestCall(reStartCall);
+		}
+	}
 	@OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
 	private void onPause(){
 		Logs.I("LifecycleManager in onPause");
+		if(cancelType == CancelType.CANCEL_PAUSE){
+			if(reStartRequest){
+				reStartCall = XOkhttpClient.getXOkHttp().cancelTagReStart(tag);
+			}else {
+				XOkhttpClient.getXOkHttp().cancelTag(tag);
+			}
+		}
 	}
 
 	@OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
 	private void onDestroy() {
 		Logs.I("LifecycleManager in onDestroy");
-		XOkhttpClient.getXOkHttp().cancelTag(tag);
+		if(cancelType == CancelType.CANCEL_DESTORY){
+			XOkhttpClient.getXOkHttp().cancelTag(tag);
+		}
 	}
 
+
+
 	public GetRequestBuilder get() {
-		return new GetRequestBuilder(client, tag);
+		GetRequestBuilder getRequestBuilder = new GetRequestBuilder(client, tag);
+		requestBuilder = getRequestBuilder;
+		return getRequestBuilder;
 	}
 
 	public PostRequestBuilder post() {
-		return new PostRequestBuilder(client, tag);
+		PostRequestBuilder postRequestBuilder = new PostRequestBuilder(client, tag);
+		requestBuilder = postRequestBuilder;
+		return postRequestBuilder;
 	}
 
 	public UpdateRequestBuilder upload() {
-		return new UpdateRequestBuilder(client, tag);
+		UpdateRequestBuilder updateRequestBuilder = new UpdateRequestBuilder(client, tag);
+		requestBuilder = updateRequestBuilder;
+		return updateRequestBuilder;
 	}
 }

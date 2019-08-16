@@ -22,7 +22,7 @@ public class GetRequestBuilder extends BaseRequestParamsBuilder<GetRequestBuilde
     }
 
     @Override
-    public void enqueue(IResponse iResponse) {
+    public void onEnqueue(IResponse iResponse) {
         if (TextUtils.isEmpty(url)) {
             new RuntimeException("url == null");
         }

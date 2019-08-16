@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 
 import com.loction.xokhttp.XOkhttpClient;
+import com.loction.xokhttp.callback.XCallBack;
 import com.loction.xokhttp.response.IResponse;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.CacheControl;
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -41,6 +43,9 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
      * 单个请求缓存模式
      */
     protected CacheControl cacheControl;
+
+
+    protected IResponse response;
 
     public BaseRequestBuilder(OkHttpClient xOkhttpClient,Object tag) {
         this.xOkhttpClient = xOkhttpClient;
@@ -151,6 +156,16 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
         }
     }
 
-    public abstract void enqueue(IResponse iResponse);
+     protected abstract void onEnqueue(IResponse iResponse);
+
+
+     public final  void enqueue(IResponse  iResponse){
+              this.response = iResponse;
+              onEnqueue(this.response);
+     }
+
+     public void requestCall(Call call){
+         call.enqueue(new XCallBack(this.response));
+     }
 
 }

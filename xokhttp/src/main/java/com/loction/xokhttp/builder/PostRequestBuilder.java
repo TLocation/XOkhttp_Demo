@@ -26,7 +26,7 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
     }
 
     @Override
-    public void enqueue(IResponse iResponse) {
+  protected   void onEnqueue(IResponse iResponse) {
         Request.Builder builder = new Request.Builder();
         if (TextUtils.isEmpty(url)) {
             new RuntimeException("url == null");
@@ -57,6 +57,7 @@ public class PostRequestBuilder extends BaseRequestParamsBuilder<PostRequestBuil
 
 
     }
+
 
     private void appendParams(FormBody.Builder builder, Map<String, String> params) {
         if (params != null && !params.isEmpty()) {

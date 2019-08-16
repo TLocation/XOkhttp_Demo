@@ -44,7 +44,7 @@ public class UpdateRequestBuilder extends BaseRequestParamsBuilder<UpdateRequest
 
 
 	@Override
-	public void enqueue(IResponse iResponse) {
+	public void onEnqueue(IResponse iResponse) {
 
 		Request.Builder builder = new Request.Builder();
 		if (TextUtils.isEmpty(url)) {
