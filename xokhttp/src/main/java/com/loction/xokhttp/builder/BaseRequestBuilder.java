@@ -137,8 +137,26 @@ public abstract class BaseRequestBuilder<T extends BaseRequestBuilder> {
         if(TextUtils.isEmpty(url)){
             throw  new NullPointerException("url==null");
         }
-        url = url.replace("{"+key+"}",value);
+        url = replacePathParams(url,key,value);
         return (T) this;
+    }
+
+    /**
+     * add url with path params
+     * eg https://www.wanandroid,com/json/{page}/10
+     *   to https://www.wanandroid,com/json/1/10
+     * @return replace url
+     * @throws NullPointerException when url or key or value is null
+     */
+    private String replacePathParams(String url,String key,String value){
+        if(isEmpty(url) || isEmpty(key) || isEmpty(value)){
+            throw new NullPointerException("url or key or value is null");
+        }
+        return url.replace("{" + key +"}" , value);
+    }
+
+    private boolean isEmpty(String msg){
+        return TextUtils.isEmpty(msg);
     }
     /**
      * 内部调用拼接参数

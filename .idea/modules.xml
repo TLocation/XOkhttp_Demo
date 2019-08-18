@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/XOkhttp_Demo.iml" filepath="$PROJECT_DIR$/XOkhttp_Demo.iml" />
-      <module fileurl="file://D:\project\XOkhttp_Demo\.idea\XOkhttp_Demo.iml" filepath="D:\project\XOkhttp_Demo\.idea\XOkhttp_Demo.iml" />
-      <module fileurl="file://D:\txl_project\XOkhttp_Demo\XOkhttp_Demo.iml" filepath="D:\txl_project\XOkhttp_Demo\XOkhttp_Demo.iml" />
+      <module fileurl="file://D:/project/XOkhttp_Demo/.idea/XOkhttp_Demo.iml" filepath="D:/project/XOkhttp_Demo/.idea/XOkhttp_Demo.iml" />
+      <module fileurl="file://D:/txl_project/XOkhttp_Demo/XOkhttp_Demo.iml" filepath="D:/txl_project/XOkhttp_Demo/XOkhttp_Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/xokhttp/xokhttp.iml" filepath="$PROJECT_DIR$/xokhttp/xokhttp.iml" />
     </modules>

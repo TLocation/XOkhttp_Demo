@@ -52,7 +52,7 @@ public class XOkhttpClient {
         return baseClass;
     }
 
-     void setBaseClass(Class<? extends IBaseResponse> baseClass) {
+    void setBaseClass(Class<? extends IBaseResponse> baseClass) {
         this.baseClass = baseClass;
     }
 
@@ -154,6 +154,7 @@ public class XOkhttpClient {
         private Context context;
         private   Class<? extends IBaseResponse> baseclazz;
 
+        private int logs = 0;
         public Builder(OkHttpClient.Builder builder) {
             if (okhttpBuilder == null) {
                 okhttpBuilder = builder;
@@ -330,6 +331,11 @@ public class XOkhttpClient {
             return this;
         }
 
+        public Builder setLogs(int logLeve){
+            logs = logLeve;
+            return this;
+        }
+
 
         /**
          * 持久化cookie
@@ -413,7 +419,7 @@ public class XOkhttpClient {
                 case METHOD_POST:
                     final RequestBody body = request.body();
 
-                    if (body != null && body instanceof FormBody && params != null && !params.isEmpty()) {
+                    if ( body instanceof FormBody && params != null && !params.isEmpty()) {
                         FormBody formBody = (FormBody) body;
                         Map<String, String> formBodyParamsMap = new HashMap<>();
                         int size = formBody.size();
@@ -428,7 +434,7 @@ public class XOkhttpClient {
 
                         }
                         requestBuilder.method(request.method(), bodyBuilder.build());
-                    } else if (body != null && body instanceof MultipartBody && params != null && !params.isEmpty()) {
+                    } else if ( body instanceof MultipartBody && params != null && !params.isEmpty()) {
                         MultipartBody multipartBody = (MultipartBody) body;
                         MultipartBody.Builder multBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
                         final Set<String> set = params.keySet();
@@ -447,15 +453,6 @@ public class XOkhttpClient {
             }
         }
 
-        Interceptor interceptor = new Interceptor() {
-
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                final Request request = chain.request();
-
-                return null;
-            }
-        };
 
         public XOkhttpClient builder() {
             XOkhttpClient xOkhttpClient = initClient(okhttpBuilder.build());
@@ -465,6 +462,7 @@ public class XOkhttpClient {
             if(baseclazz!=null){
                 xOkhttpClient.setBaseClass(baseclazz);
             }
+            Config.DEBUG_LEVE = logs;
             return xOkhttpClient;
         }
     }

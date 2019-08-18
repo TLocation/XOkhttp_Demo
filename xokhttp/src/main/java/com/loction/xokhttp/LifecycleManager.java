@@ -7,14 +7,13 @@ import android.content.Context;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.telecom.Call;
-import android.util.Log;
 
 import com.loction.xokhttp.builder.BaseRequestBuilder;
 import com.loction.xokhttp.builder.GetRequestBuilder;
 import com.loction.xokhttp.builder.PostRequestBuilder;
 import com.loction.xokhttp.builder.UpdateRequestBuilder;
 
+import okhttp3.Call;
 import okhttp3.OkHttpClient;
 
 /**
@@ -28,11 +27,11 @@ public class LifecycleManager implements LifecycleObserver {
 	private Object tag;
 	private OkHttpClient client;
 
-	private boolean reStartRequest;
+	private boolean reStartRequest = true;
 
-	private int cancelType;
+	private int cancelType = CancelType.CANCEL_PAUSE;
 
-	private okhttp3.Call reStartCall;
+	private Call reStartCall;
 
 	private BaseRequestBuilder requestBuilder;
 
@@ -101,6 +100,7 @@ public class LifecycleManager implements LifecycleObserver {
 		if(cancelType == CancelType.CANCEL_PAUSE){
 			if(reStartRequest){
 				reStartCall = XOkhttpClient.getXOkHttp().cancelTagReStart(tag);
+				Logs.I("LifecycleManager reStartCall is null " + (reStartCall == null));
 			}else {
 				XOkhttpClient.getXOkHttp().cancelTag(tag);
 			}

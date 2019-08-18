@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.loction.xokhttp.Logs;
 import com.loction.xokhttp.XOkhttpClient;
 import com.loction.xokhttp.response.*;
 import com.loction.xokhttp.response.UploadResponse;
@@ -24,6 +25,7 @@ import java.time.temporal.ValueRange;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
 		xOkhttpClient = new XOkhttpClient.Builder()
 				.setBaseClass(BaseResponse.class)
+				.setLogs(Logs.LOG_ALL)
+				.setConnectTime(1000*60*2, TimeUnit.SECONDS)
 				.builder();
-		xOkhttpClient.with(this).get().url("http://www.wanandroid.com/project/list/{page}/json")
+		xOkhttpClient.with(this).get().url("https://www.wanandroid.com/project/list/{page}/json")
 				.addPathParam("page","0")
 				.addParam("cid","294")
 				.enqueue(new GsonResponseHandler<DayaBean>() {
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 					}
 				});
 		xOkhttpClient.with(this).post()
-				.url("http://www.wanandroid.com/article/query/{page}/json")
+				.url("https://www.wanandroid.com/article/query/{page}/json")
 				.addPathParam("page","0")
 				.addParam("k","TextView")
 				.enqueue(new GsonResponseHandler<SeachBean>() {
